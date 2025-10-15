@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://project-virtugrow-api.onrender.com/' + '/api', // backend url
+  baseURL: import.meta.env.VITE_API_URL + "/api", // backend url
   headers: {
     'Content-Type': 'application/json',
   },
