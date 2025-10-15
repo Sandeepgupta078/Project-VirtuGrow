@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://project-virtugrow-api.onrender.com/api', // backend url
+  baseURL: 'https://project-virtugrow-api.onrender.com/' + '/api', // backend url
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // Add token to each request
