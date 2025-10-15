@@ -27,8 +27,24 @@ exports.register = async (req, res) => {
             email,
             password: hashedPassword
         })
-        res.status(201).json({
+
+        const payload = {
+            id: user._id,
+            email: user.email
+        }
+        const token = jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        const options = {
+            expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+            httpOnly: true
+        }
+
+        res.cookie('token', token, options).status(201).json({
             message: 'User registered successfully',
+            token,
             user: {
                 id: user._id,
                 name: user.name,
@@ -103,24 +119,13 @@ exports.login = async (req, res) => {
     }
 }
 
-// get user profile
-// exports.getProfile = async (req, res) => {
-//     try {
-//         const user = await User.findById(req.user.id);
-//         if (!user) {
-//             return res.status(404).json({
-//                 message: 'User not found'
-//             })
-//         }
-//         res.status(200).json({
-//             user
-//         })
-//     }
-//     catch (error) {
-//         console.error('Get profile error:', error);
-//         res.status(500).json({
-//             error: error.message,
-//             message: 'Server error'
-//         })
-//     }
-// }
+// User Logout
+exports.logout = (req, res) => {
+    res.cookie('token', null, {
+        expires: new Date(Date.now()),
+        httpOnly: true
+    }).status(200).json({
+        success: true,
+        message: 'Logged out successfully'
+    })
+}
