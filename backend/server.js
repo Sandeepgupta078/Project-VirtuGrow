@@ -22,9 +22,10 @@ app.use(limiter);
 
 const PORT = process.env.PORT || 5000;
 
-// app.get('/', (req, res) => {
-//     res.send('API is running...');
-// });
+app.get("/", (req, res) => {
+  res.send("Server running successfully");
+});
+
 
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
