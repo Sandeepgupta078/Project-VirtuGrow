@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Home from "../pages/Home";
+import toast from "react-hot-toast";
 
 
 export default function Navbar() {
@@ -11,6 +11,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     navigate("/login");
+    toast.success("Logged out successfully");
   };
 
   const handleTitleClick = () => {

@@ -3,10 +3,13 @@ import API from "../api/axios";
 import TaskForm from "../components/TaskForm";
 import TaskList from "../components/TaskList";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -14,7 +17,13 @@ export default function Dashboard() {
       const res = await API.get("/tasks");
       setTasks(res.data.tasks);
     } catch {
-      toast.error("Failed to fetch tasks");
+      if (err.response?.status === 401) {
+        toast.error("Session expired, please login again.");
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else {
+        toast.error("Failed to fetch tasks");
+      }
     } finally {
       setLoading(false);
     }

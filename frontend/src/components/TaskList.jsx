@@ -1,20 +1,32 @@
 import API from "../api/axios";
+import toast from "react-hot-toast";
 
 export default function TaskList({ tasks, fetchTasks, loading }) {
+  
   const handleDelete = async (id) => {
-    await API.delete(`/tasks/${id}`);
-    fetchTasks();
+    try {
+      await API.delete(`/tasks/${id}`);
+      toast.success("Task deleted successfully");
+      fetchTasks();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to delete task");
+    }
   };
 
   const handleStatusChange = async (id, status) => {
-    await API.put(`/tasks/${id}`, { status });
-    fetchTasks();
+    try {
+      await API.put(`/tasks/${id}`, { status });
+      toast.success("Task updated successfully");
+      fetchTasks();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update status");
+    }
   };
 
   if (loading)
     return <p className="text-center text-gray-500 mt-6">Loading tasks...</p>;
 
-  if (tasks.length === 0)
+  if (!tasks || tasks.length === 0)
     return <p className="text-center text-gray-600 mt-6">No tasks yet.</p>;
 
   return (

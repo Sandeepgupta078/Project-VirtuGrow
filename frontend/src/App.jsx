@@ -6,11 +6,13 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import Home from "./pages/Home";
+import { Toaster } from "react-hot-toast"
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Toaster position="top-center" reverseOrder={false} />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
